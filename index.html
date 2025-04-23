@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>EdgeTunnel Converter</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>EdgeTunnel</h1>
+    <textarea id="vlessInput" placeholder="Paste VLESS config..."></textarea>
+    <select id="formatSelect">
+      <option value="clash">Clash</option>
+      <option value="singbox">Singbox</option>
+    </select>
+    <button id="convertBtn">Convert</button>
+    <pre id="output"></pre>
+  </div>
+  <script>
+    document.getElementById('convertBtn').addEventListener('click', async () => {
+      const vless = document.getElementById('vlessInput').value
+      const format = document.getElementById('formatSelect').value
+      
+      try {
+        const res = await fetch('/convert?format=' + format, {
+          method: 'POST',
+          body: JSON.stringify({ vless })
+        })
+        document.getElementById('output').textContent = await res.text()
+      } catch (err) {
+        alert('Conversion failed: ' + err)
+      }
+    })
+  </script>
+</body>
+</html>
